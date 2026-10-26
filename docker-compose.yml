@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: docreview
+      POSTGRES_USER: docreview
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-docreview}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docreview"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/docreview
+      DB_USER: docreview
+      DB_PASSWORD: ${DB_PASSWORD:-docreview}
+      UPLOAD_DIR: /app/data/uploads
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads:/app/data/uploads
+
+volumes:
+  db-data:
+  uploads:
