@@ -128,6 +128,6 @@ curl -u reviewer:reviewer-pass http://localhost:8080/api/documents/1/audit
 6. **Scanned PDFs:** send the PDF itself to Claude (document block) instead of extracted text.
 7. **Testcontainers:** run integration tests against real PostgreSQL.
 
-## For your CV
+
 
 > **AI Document Review Assistant:** Spring Boot + PostgreSQL app that extracts data from uploaded documents with the Claude API (structured outputs), using background processing, role-based access control, a human approval workflow and an audit log.
